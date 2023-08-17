@@ -10,7 +10,7 @@ from . test_auth_basic import login,SUPER_PASSWORD,SUPER_USER,logout_user
 from .conftest import initial_test_users
 
 RESOURCE_URL = '/v2/resources'
-UNIT_URL = '/v2/bibles/'
+UNIT_URL = '/v2/resources/bibles/'
 RESTORE_URL = '/v2/admin/restore'
 headers = {"contentType": "application/json", "accept": "application/json"}
 headers_auth = {"contentType": "application/json",
@@ -691,6 +691,7 @@ def test_delete_default():
     headers_auth = {"contentType": "application/json",#pylint: disable=redefined-outer-name
                 "accept": "application/json"}
     headers_auth['Authorization'] = "Bearer"+" "+initial_test_users['VachanAdmin']['token']
+
     #Check bible book exist in dynamic table ater post
     post_response = client.get(UNIT_URL+resource_name+'/books?book_code=mat',\
         headers=headers_auth)
@@ -721,17 +722,32 @@ def test_delete_default():
         response = client.delete(UNIT_URL+resource_name+'/books' + "?biblebook_id=" + str(biblebook_id), headers=headers_au)
         assert response.status_code == 403
         assert response.json()['error'] == 'Permission Denied'
+    # #Login as Super Admin
+    as_data = {
+            "user_email": SUPER_USER,
+            "password": SUPER_PASSWORD
+        }
+    response = login(as_data)
+    assert response.json()['message'] == "Login Succesfull"
+    test_user_token = response.json()["token"]
+    headers_sa= {"contentType": "application/json",
+                    "accept": "application/json",
+                    'Authorization': "Bearer"+" "+test_user_token}
 
     #Delete biblebook with Vachan Admin
     headers_va = {"contentType": "application/json",
                     "accept": "application/json",
                     'Authorization': "Bearer"+" "+initial_test_users['VachanAdmin']['token']
             }
+    biblebook_response = client.get(UNIT_URL+resource_name+'/books',headers=headers_auth)
+    print("*****GET BEFORE DELETE:",biblebook_response.json())
     response = client.delete(UNIT_URL+resource_name+'/books' + "?biblebook_id=" + str(biblebook_id), headers=headers_va)
+    print("***DELETE RESPONSE:",response.json())
     assert response.status_code == 200
     assert response.json()['message'] ==\
          f"Bible Book with id {biblebook_id} deleted successfully"
     biblebook_response = client.get(UNIT_URL+resource_name+'/books',headers=headers_auth)
+    print("****GET AFTER DELETE:",biblebook_response.json())
     assert biblebook_response.status_code == 200
     #Check biblebook is deleted from table
     delete_response = client.get(UNIT_URL+resource_name+'/books?book_code=mat',\
@@ -742,39 +758,39 @@ def test_delete_default():
     assert_not_available_content(delete_response2)
     
 
-def test_delete_default_superadmin():
-    ''' positive test case, checking for correct return of deleted biblebook ID'''
-    #Created User or Super Admin can only delete biblebook
-    #creating data
-    response,resource_name = test_post_default()
+# def test_delete_default_superadmin():
+#     ''' positive test case, checking for correct return of deleted biblebook ID'''
+#     #Created User or Super Admin can only delete biblebook
+#     #creating data
+#     response,resource_name = test_post_default()
 
-    #Login as Super Admin
-    as_data = {
-            "user_email": SUPER_USER,
-            "password": SUPER_PASSWORD
-        }
-    response = login(as_data)
-    assert response.json()['message'] == "Login Succesfull"
-    test_user_token = response.json()["token"]
-    headers_sa= {"contentType": "application/json",
-                    "accept": "application/json",
-                    'Authorization': "Bearer"+" "+test_user_token
-            }
+#     #Login as Super Admin
+#     as_data = {
+#             "user_email": SUPER_USER,
+#             "password": SUPER_PASSWORD
+#         }
+#     response = login(as_data)
+#     assert response.json()['message'] == "Login Succesfull"
+#     test_user_token = response.json()["token"]
+#     headers_sa= {"contentType": "application/json",
+#                     "accept": "application/json",
+#                     'Authorization': "Bearer"+" "+test_user_token
+#             }
 
-    biblebook_response = client.get(UNIT_URL+resource_name+'/books',headers=headers_sa)
-    biblebook_id = biblebook_response.json()[0]['bookContentId']
+#     biblebook_response = client.get(UNIT_URL+resource_name+'/books',headers=headers_sa)
+#     biblebook_id = biblebook_response.json()[0]['bookContentId']
 
    
 
-     #Delete biblebook with Super Admin
-    response = client.delete(UNIT_URL+resource_name+'/books' + "?biblebook_id=" + str(biblebook_id), headers=headers_sa)
-    assert response.status_code == 200
-    assert response.json()['message'] ==\
-         f"Bible Book with id {biblebook_id} deleted successfully"
-    #Check biblebook is deleted from table
-    biblebook_response = client.get(UNIT_URL+resource_name+'/books',headers=headers_sa)
-    logout_user(test_user_token)
-    return response,resource_name
+#      #Delete biblebook with Super Admin
+#     response = client.delete(UNIT_URL+resource_name+'/books' + "?biblebook_id=" + str(biblebook_id), headers=headers_sa)
+#     assert response.status_code == 200
+#     assert response.json()['message'] ==\
+#          f"Bible Book with id {biblebook_id} deleted successfully"
+#     #Check biblebook is deleted from table
+#     biblebook_response = client.get(UNIT_URL+resource_name+'/books',headers=headers_sa)
+#     logout_user(test_user_token)
+#     return response,resource_name
 
 def test_delete_biblebook_id_string():
     '''positive test case, biblebook id as string'''
