@@ -352,7 +352,7 @@ services:
      interval: 10s
      retries: 10
     environment:
-     - VACHAN_AI_POSTGRES_HOST=dov2conn.bridgeconn.com
+     - VACHAN_AI_POSTGRES_HOST=${VACHAN_AI_POSTGRES_HOST:-dov2prodconn.bridgeconn.com}
      - VACHAN_AI_POSTGRES_USER=${VACHAN_AI_POSTGRES_USER:-postgres}
      - VACHAN_AI_POSTGRES_PASSWORD=${VACHAN_AI_POSTGRES_PASSWORD:-secret}
      - VACHAN_AI_POSTGRES_DATABASE=${VACHAN_AI_POSTGRES_DATABASE:-vachan_ai_db}
@@ -364,9 +364,9 @@ services:
      - VACHAN_AI_NLLB_BATCH_SIZE=${VACHAN_AI_NLLB_BATCH_SIZE:-10}
       
     
-     - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI:-http://dov2conn.bridgeconn.com:8083}
+     - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI:-http://dov2prodconn.bridgeconn.com:8083}
      - VACHAN_AI_ARTIFACT_PATH=${VACHAN_AI_ARTIFACT_PATH:-models}
-     - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2conn.bridgeconn.com:8085/v2/models}
+     - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
      - VACHAN_AI_MODEL_SETTINGS_DIR=${VACHAN_AI_MODEL_SETTINGS_DIR:-serving_model}
      - VACHAN_AI_REQUEST_TIMEOUT=${VACHAN_AI_REQUEST_TIMEOUT:-60}
 
@@ -417,14 +417,14 @@ services:
     environment:
      - REDIS_HOST=redis
      - REDIS_PORT=6379
-     - VACHAN_AI_POSTGRES_HOST=dov2conn.bridgeconn.com
+     - VACHAN_AI_POSTGRES_HOST=${VACHAN_AI_POSTGRES_HOST:-dov2prodconn.bridgeconn.com}
      - VACHAN_AI_POSTGRES_USER=${VACHAN_AI_POSTGRES_USER:-postgres}
      - VACHAN_AI_POSTGRES_PASSWORD=${VACHAN_AI_POSTGRES_PASSWORD:-secret}
      - VACHAN_AI_POSTGRES_DATABASE=${VACHAN_AI_POSTGRES_DATABASE:-vachan_ai_db}
      - VACHAN_AI_POSTGRES_SCHEMA=${VACHAN_AI_POSTGRES_SCHEMA:-aischema}
      - VACHAN_AI_POSTGRES_PORT=5433
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
-     - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2conn.bridgeconn.com:8085/v2/models}
+     - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
      - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
     command: rq worker --url redis://:${VACHAN_REDIS_PASS}@redis:6379
