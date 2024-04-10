@@ -49,7 +49,7 @@ server {
         proxy_pass http://vachan-cms-rest:8005;    
     }
     
-    location /graphql/ {
+    location /v2/graphql/ {
         proxy_pass http://vachan-cms-graphql:8004;    
     }
     
