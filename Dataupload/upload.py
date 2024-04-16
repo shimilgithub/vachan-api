@@ -12,7 +12,7 @@ from sqlalchemy.schema import CreateSchema
 BASE_URL = r"http://127.0.0.1:8000/v2/cms/rest"
 # BASE_URL = r"https://api.vachanengine.org/v2/cms/rest"
 # BASE_URL = r"https://stagingapi.vachanengine.org/v2/cms/rest"
-TOKEN = "VaChAn#CMS#1903"
+TOKEN = "<valid_token>"
 
 headers = {"contentType": "application/json",
             "accept": "application/json",
@@ -556,52 +556,52 @@ def add_bible(csv_file_path):
 
 
 #==========================================================================================================================
-def add_parascriptual(csv_file_path):   #Only use if you want to add new parascriptual.
-    data_list = []
-    try:
-        with open(csv_file_path, 'r', encoding='utf-8') as file:
-            # Create a CSV reader
-            reader = csv.DictReader(file)
-            # Assuming the first row is the header
-            for row in reader:
-                try:
-                    # Extracting required fields
-                    reference_data = json.loads(row['reference'])
-                    reference = {
-                        "book": reference_data['book'],
-                        "chapter": reference_data.get('chapter', 0),
-                        "verseNumber": reference_data.get('verseNumber', 0),
-                        "bookEnd": reference_data.get('bookEnd', ''),
-                        "chapterEnd": reference_data.get('chapterEnd', 0),
-                        "verseEnd": reference_data.get('verseEnd', 0)
-                    }
-                except KeyError:
-                    print(f"Error: 'reference' column does not contain required keys in row: {row}")
-                    continue
-                except json.JSONDecodeError:
-                    print(f"Error: 'reference' column contains invalid JSON format in row: {row}")
-                    continue
-                # Constructing data dictionary
-                data = {
-                    "category": row.get('category', ''),
-                    "title": row.get('title', ''),
-                    "description": row.get('description', ''),
-                    "content": row.get('content', ''),
-                    "reference": reference,
-                    "link": row.get('link', ''),
-                    "metaData": json.loads(row.get('metadata', '{}')),
-                    "active": row.get('active', '') == 't'
-                }
-                data_list.append(data)
+# def add_parascriptual(csv_file_path):   #Only use if you want to add new parascriptual.
+#     data_list = []
+#     try:
+#         with open(csv_file_path, 'r', encoding='utf-8') as file:
+#             # Create a CSV reader
+#             reader = csv.DictReader(file)
+#             # Assuming the first row is the header
+#             for row in reader:
+#                 try:
+#                     # Extracting required fields
+#                     reference_data = json.loads(row['reference'])
+#                     reference = {
+#                         "book": reference_data['book'],
+#                         "chapter": reference_data.get('chapter', 0),
+#                         "verseNumber": reference_data.get('verseNumber', 0),
+#                         "bookEnd": reference_data.get('bookEnd', ''),
+#                         "chapterEnd": reference_data.get('chapterEnd', 0),
+#                         "verseEnd": reference_data.get('verseEnd', 0)
+#                     }
+#                 except KeyError:
+#                     print(f"Error: 'reference' column does not contain required keys in row: {row}")
+#                     continue
+#                 except json.JSONDecodeError:
+#                     print(f"Error: 'reference' column contains invalid JSON format in row: {row}")
+#                     continue
+#                 # Constructing data dictionary
+#                 data = {
+#                     "category": row.get('category', ''),
+#                     "title": row.get('title', ''),
+#                     "description": row.get('description', ''),
+#                     "content": row.get('content', ''),
+#                     "reference": reference,
+#                     "link": row.get('link', ''),
+#                     "metaData": json.loads(row.get('metadata', '{}')),
+#                     "active": row.get('active', '') == 't'
+#                 }
+#                 data_list.append(data)
 
-    except FileNotFoundError:
-        print(f"Error: File '{csv_file_path}' not found.")
-    except Exception as e:
-        print(f"An error occurred while processing {csv_file_path}: {str(e)}")
-    return data_list
-data = add_parascriptual('files4/ml_TBP_1_parascriptural.csv')
-resource_name = 'ml_TBP_1_parascriptural'
-parascript_url = f"/resources/parascripturals/{resource_name}"
+#     except FileNotFoundError:
+#         print(f"Error: File '{csv_file_path}' not found.")
+#     except Exception as e:
+#         print(f"An error occurred while processing {csv_file_path}: {str(e)}")
+#     return data_list
+# data = add_parascriptual('files4/ml_TBP_1_parascriptural.csv')
+# resource_name = 'ml_TBP_1_parascriptural'
+# parascript_url = f"/resources/parascripturals/{resource_name}"
 # upload_data(data, parascript_url)
 
 
