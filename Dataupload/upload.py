@@ -91,47 +91,6 @@ def create_database_schema():
 #             'Authorization': "Bearer"+" "+ TOKEN
 #             }
             
-# SOURCEDATA = []
-# #upload single data
-# def upload_v2_data(input_data,unit_url):
-#     ''' upload data t=in v2 format'''
-#     response = requests.post(BASE_URL+unit_url, json=input_data,headers=headers)
-
-#     if not response.status_code == 201:
-#         print("resp==>",response)
-#         print("resp==>",response.json())
-#         print("---------------------------------------------------------------------")
-#     print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-
-
-# def add_resources_v2():
-#     '''add resources in v2 format'''
-#     # with open('./files/v1-v2_sources.csv','r',encoding="UTF-8") as file:
-#     with open('./files/commentarydata_en_BBC_1_commentary.txt','r',encoding="UTF-8") as file:
-#         csvreader = csv.reader(file)
-#         header = next(csvreader)
-#         permission_list = []
-#         for table_row in csvreader:
-#             # print("table_row[15]:",type(table_row[15]), table_row[15])
-#             access_perm = json.loads(table_row[15])
-#             # access_perm = table_row[15]  
-#             permission_list = [x for x in access_perm]
-#             source_inp = {
-#             "resourceType": table_row[6],
-#             "language": table_row[9],
-#             "version": table_row[12],
-#             "versionTag": table_row[13],
-#             "label": ["latest","published"],
-#             "year": table_row[3],
-#             "license": table_row[4].upper(),
-#             "accessPermissions": permission_list,
-#             "metaData": json.loads(table_row[14])
-#             # "metaData": table_row[14]
-#             }
-#             upload_v2_data(source_inp,'/resources')
-#             print("Sourcename--->",table_row[2])
-#             SOURCEDATA.append(source_inp)
-
 
 
 
@@ -191,15 +150,11 @@ def add_versions():
 def add_resources():
     '''Add resources'''
     with open('files/resources.csv','r',encoding="UTF-8") as file:
-
         csvreader = csv.reader(file)
         next(csvreader)
-
         for table_row in csvreader:
             if not table_row:
                 continue
-
-            # print("!!tablerow:",table_row)
             source_inp = {
                 "resourceType": table_row[0],
                 "language": table_row[1],
@@ -219,7 +174,6 @@ def book_id_code_mapping(book_id):
     '''Map bible book id to book code'''
     with open('./files/v1bookcodemap.json','r',encoding="UTF-8") as file:
         v1_book_code_json = json.load(file)
-    # print(v1_book_code_json)
     return(v1_book_code_json[book_id])
 
 
@@ -232,7 +186,6 @@ def upload_commentary(file_path):
     parsed_data = []
     with open(file_path, 'r', encoding="UTF-8") as file:
         for line in file:
-            # print("line:",line)
             fields = line.strip().split('\t')
             if len(fields) == 7:
                 parsed_data.append({
@@ -383,12 +336,6 @@ def upload_v2_project_videos():
                             "chapter": int(chapter[0]) if chapter else 0,
                             "verseEnd": 0
                         }
-                        
-                        # temp_ref = {
-                        #         "book": buk,
-                        #         "chapter": 0,
-                        # }
-                        # references.append(temp_ref)
             metadata = {"series": table_row[10]}
             print("----------REF:",temp_ref)
             video_inp = {
@@ -404,13 +351,9 @@ def upload_v2_project_videos():
                 TBP_lang_based_contents[table_row[1]].append(video_inp)
             else:
                 TBP_lang_based_contents[table_row[1]] = [video_inp]
-    #upload content
-    # exlcude_test_lang = ["printhi"]
-    # print("COntent:",TBP_lang_based_contents[0])
     for content in TBP_lang_based_contents:
     # if not content in inlcude_test_lang:
-        print("******************************************")
-        
+        print("******************************************")       
         resource_name = content+"_TBP_1_parascriptural"
         print("resourcename----------------->",resource_name)
         resource_url = f"/resources/parascripturals/{resource_name}"
@@ -470,8 +413,7 @@ def add_signbible_data(csv_file_path):
                     # Parse each column from the line
                     signvideo_id = int(line[0].strip())
                     title = line[1].strip()
-                    description = line[2].strip()
-                    
+                    description = line[2].strip()                   
                     # Parse reference data
                     try:
                         reference_data = json.loads(line[3].strip())
@@ -486,8 +428,7 @@ def add_signbible_data(csv_file_path):
                     except KeyError:
                         raise ValueError(f"Reference column does not contain required keys in line {line_number}")
                     except json.JSONDecodeError:
-                        raise ValueError(f"Reference column contains invalid JSON format in line {line_number}")
-                    
+                        raise ValueError(f"Reference column contains invalid JSON format in line {line_number}")                   
                     ref_start = line[4].strip()
                     ref_end = line[5].strip()
                     link = line[6].strip()
@@ -517,7 +458,6 @@ def add_signbible_data(csv_file_path):
                     print(f"Error processing line {line_number}: {ve}")
     except FileNotFoundError:
         print(f"Error: CSV file '{csv_file_path}' not found.")
-
     return parsed_data
 
 
@@ -551,66 +491,6 @@ def add_bible(csv_file_path):
 
 
 
-
-
-
-
-#==========================================================================================================================
-# def add_parascriptual(csv_file_path):   #Only use if you want to add new parascriptual.
-#     data_list = []
-#     try:
-#         with open(csv_file_path, 'r', encoding='utf-8') as file:
-#             # Create a CSV reader
-#             reader = csv.DictReader(file)
-#             # Assuming the first row is the header
-#             for row in reader:
-#                 try:
-#                     # Extracting required fields
-#                     reference_data = json.loads(row['reference'])
-#                     reference = {
-#                         "book": reference_data['book'],
-#                         "chapter": reference_data.get('chapter', 0),
-#                         "verseNumber": reference_data.get('verseNumber', 0),
-#                         "bookEnd": reference_data.get('bookEnd', ''),
-#                         "chapterEnd": reference_data.get('chapterEnd', 0),
-#                         "verseEnd": reference_data.get('verseEnd', 0)
-#                     }
-#                 except KeyError:
-#                     print(f"Error: 'reference' column does not contain required keys in row: {row}")
-#                     continue
-#                 except json.JSONDecodeError:
-#                     print(f"Error: 'reference' column contains invalid JSON format in row: {row}")
-#                     continue
-#                 # Constructing data dictionary
-#                 data = {
-#                     "category": row.get('category', ''),
-#                     "title": row.get('title', ''),
-#                     "description": row.get('description', ''),
-#                     "content": row.get('content', ''),
-#                     "reference": reference,
-#                     "link": row.get('link', ''),
-#                     "metaData": json.loads(row.get('metadata', '{}')),
-#                     "active": row.get('active', '') == 't'
-#                 }
-#                 data_list.append(data)
-
-#     except FileNotFoundError:
-#         print(f"Error: File '{csv_file_path}' not found.")
-#     except Exception as e:
-#         print(f"An error occurred while processing {csv_file_path}: {str(e)}")
-#     return data_list
-# data = add_parascriptual('files4/ml_TBP_1_parascriptural.csv')
-# resource_name = 'ml_TBP_1_parascriptural'
-# parascript_url = f"/resources/parascripturals/{resource_name}"
-# upload_data(data, parascript_url)
-
-
-
-
-#==========================================================================================================================
-
-
-# add_resources_v2()
 
 try:
     #check whether the schema is there or not.If not , it will create one as mentioned
@@ -651,7 +531,6 @@ try:
     ]
     for file_path in file_paths:
         data, resource_name = upload_commentary(file_path)
-        # print("resourcename", resource_name)
         commentary_url = f"/resources/commentaries/{resource_name}"
         upload_data(data, commentary_url)
 
@@ -670,7 +549,6 @@ try:
     for file_path in file_paths:
         data, resource_name = add_vocabularies(file_path)
         service_url = f"/resources/vocabularies/{resource_name}"
-        # print("resourcename----------------->",resource_name)
         upload_data(data, service_url)
 
     print("Data Uploaded successfully!")
@@ -772,8 +650,6 @@ try:
 
     #Call the function to upload data
     # upload_bible_data()
-
     print("Data Uploaded success uploadedully!")
-
 except Exception as e:
     print(f"An error occurred: {str(e)}")
