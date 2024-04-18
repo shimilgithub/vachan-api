@@ -507,7 +507,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - kratos-db-backup:/var/backups/kratos:ro
       - vachan-db-backup:/var/backups/vachan:ro
-      - /mnt/vachanapi_backup/backups:/var/backup-copies/:rw condition: service_healthy
+      - /mnt/vachanapi_backup/backups:/var/backup-copies/:rw
       - logs-vol:/app/logs
     environment:
       - TZ=${TIMEZONE:-Asia/Calcutta}
