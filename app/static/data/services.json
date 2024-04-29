@@ -16,7 +16,7 @@
             },
 
             {
-                "link":"https://stagingapi.vachanengine.org/v2/cms/rest/docs",
+                "link": "/v2/cms/rest/docs",
                 "linkname":"Vachan-CMS Docs",
                 "button":false
             }
@@ -33,7 +33,7 @@
             },
 
             {
-                "link":"https://stagingapi.vachanengine.org/v2/text/translate/token-based/docs",
+                "link":"/v2/text/translate/token-based/docs",
                 "linkname":"Vachan-TBT Docs",
                 "button":false
             }
@@ -44,7 +44,7 @@
         "content":"AI APIs empower various AI functionalities, including Speech-to-Text, Text-to-Speech, Speech-to-Speech translation, and Text translation. We continuously strive to keep pace with recent trends by leveraging top-performing open-source models such as MMS, NLLB, SeamlessM4T, XLSR, etc. Furthermore, we are consistently fine-tuning these models for new languages. Our experiments and AI models are well-managed and tracked using an MLOps tool, which serves as both a model registry and a tracking mechanism. We provide APIs that interact with the central model registry. ",
         "links":[
             {
-                "link":"https://stagingapi.vachanengine.org/v2/ai/docs",
+                "link":"/v2/ai/docs",
                 "linkname":"Vachan-AI Docs",
                 "button":false
             }
@@ -55,7 +55,7 @@
         "content":"Access Restriction is implemented for all the endpoints in different levels based on the API’s content priority. User level, Content level, Application level-based security is added to each endpoint. Some of the endpoints are open accessible and others are restricted to user-roles only. User with specific role permission can only access those APIs. Access to endpoints can be done with the help of authorized token. The security implemented for the Vachan Engine contents are based on Role Based Access Control (RBAC) Auwhich restricts the access based on user's role, access-tags etc.",
         "links":[
             {
-                "link":"https://stagingapi.vachanengine.org/v2/auth/docs",
+                "link":"/v2/auth/docs",
                 "linkname":"Vachan-AUTH Docs",
                 "button":false
             }
@@ -66,7 +66,7 @@
         "content":"GraphQL module for Vachan Engine is a specification for web APIs that offers a compelling alternative to REST. This module serves as a middle layer between client applications and data sources. With its powerful query language, GraphQL enables declarative data fetching, eliminating the need for over-fetching or under-fetching. Initially implemented using Graphene, we are now migrating to the Strawberry library, ensuring access to the latest GraphQL advancements. It is hosted alongside our REST API services, this integration allows you to leverage the best of both worlds. While REST provides familiar GET, PUT, and POST endpoints, GraphQL empowers you with flexible and precise data retrieval.",
         "links":[
             {
-                "link":"https://stagingapi.vachanengine.org/v2/graphql/",
+                "link":"/v2/graphql/",
                 "linkname":"Vachan-GQL Docs",
                 "button":false
             }

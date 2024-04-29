@@ -936,6 +936,30 @@
 <script src="/static/scripts/services.js"></script>
 <script src="/static/scripts/client.js"></script>
 <script src="/static/scripts/scripts.js"></script>
-   
+<!-- <script>
+  const rootUrl = '{{ root_url }}';
+
+  // Function to recursively replace placeholders with actual root URL value
+  function replacePlaceholders(obj) {
+      for (const key in obj) {
+          if (typeof obj[key] === 'string') {
+              // Replace placeholder with actual root URL
+              obj[key] = obj[key].replace(/\{\{ROOT_URL\}\}/g, rootUrl);
+          } else if (typeof obj[key] === 'object') {
+              // Recursively traverse nested objects
+              replacePlaceholders(obj[key]);
+          }
+      }
+  }
+
+  // Load service JSON data on initial load
+  async function loadServiceData() {
+      const req = await fetch('/static/data/services.json');
+      const res = await req.json();
+      replacePlaceholders(res); // Replace placeholders with actual root URL
+      serviceContent = res;
+  }
+  window.onload = loadServiceData();
+</script> -->
 
 </html>
