@@ -729,7 +729,6 @@
       </div>
       <div class="row align-items-center justify-content-center">
 
-        <!-- <div class="col px-3 my-2 text-center"> -->
         <div class="col-md-3 col-sm-6 px-3 my-2 text-center techimages">  
 
 
@@ -790,6 +789,38 @@
 
           <img class="" src="{{ root_url }}/static/images/pytorch.png" alt="images/pytorch.png"
             width="171" height=86">
+
+
+        </div>
+
+        <div class="col-md-3 col-sm-6 px-3 my-3 text-center techimages">
+
+          <img class="" src="{{ root_url }}/static/images/mlflow.png" alt="images/mlflow.png"
+            width="140" height=58">
+
+
+        </div>
+
+        <div class="col-md-3 col-sm-6 px-3 my-3 text-center techimages">
+
+          <img class="" src="{{ root_url }}/static/images/mlserver.png" alt="images/mlserver.png"
+            width="260" height=140">
+
+
+        </div>
+
+        <div class="col-md-3 col-sm-6 px-3 my-3 text-center techimages">
+
+          <img class="" src="{{ root_url }}/static/images/skypilot.png" alt="images/skypilot.png"
+            width="200" height=95">
+
+
+        </div>
+
+        <div class="col-md-3 col-sm-6 px-3 my-3 text-center techimages">
+
+          <img class="" src="{{ root_url }}/static/images/sqlalchemy.png" alt="images/sqlalchemy.png"
+            width="200" height=95">
 
 
         </div>
@@ -905,6 +936,30 @@
 <script src="/static/scripts/services.js"></script>
 <script src="/static/scripts/client.js"></script>
 <script src="/static/scripts/scripts.js"></script>
-   
+<!-- <script>
+  const rootUrl = '{{ root_url }}';
+
+  // Function to recursively replace placeholders with actual root URL value
+  function replacePlaceholders(obj) {
+      for (const key in obj) {
+          if (typeof obj[key] === 'string') {
+              // Replace placeholder with actual root URL
+              obj[key] = obj[key].replace(/\{\{ROOT_URL\}\}/g, rootUrl);
+          } else if (typeof obj[key] === 'object') {
+              // Recursively traverse nested objects
+              replacePlaceholders(obj[key]);
+          }
+      }
+  }
+
+  // Load service JSON data on initial load
+  async function loadServiceData() {
+      const req = await fetch('/static/data/services.json');
+      const res = await req.json();
+      replacePlaceholders(res); // Replace placeholders with actual root URL
+      serviceContent = res;
+  }
+  window.onload = loadServiceData();
+</script> -->
 
 </html>
