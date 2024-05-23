@@ -346,16 +346,16 @@ services:
 
 
  vachan-ai:
-    image: jayasankarkk/vachan-ai:0.0.0-alpha.6
+    image: vachanengine/vachan-ai:0.0.0-alpha.7
     healthcheck:
      timeout: 45s
      interval: 10s
      retries: 10
     environment:
-     - VACHAN_AI_POSTGRES_HOST=${VACHAN_AI_POSTGRES_HOST:-dov2prodconn.bridgeconn.com}
+     - VACHAN_AI_POSTGRES_HOST=${VACHAN_AI_POSTGRES_HOST:-vachan-db}
      - VACHAN_AI_POSTGRES_USER=${VACHAN_AI_POSTGRES_USER:-postgres}
-     - VACHAN_AI_POSTGRES_PASSWORD=${VACHAN_AI_POSTGRES_PASSWORD:-secret}
-     - VACHAN_AI_POSTGRES_DATABASE=${VACHAN_AI_POSTGRES_DATABASE:-vachan_ai_db}
+     - VACHAN_AI_POSTGRES_PASSWORD=${VACHAN_AI_POSTGRES_PASSWORD:-password}
+     - VACHAN_AI_POSTGRES_DATABASE=${VACHAN_AI_POSTGRES_DATABASE:-vachan_dev}
      - VACHAN_AI_POSTGRES_SCHEMA=${VACHAN_AI_POSTGRES_SCHEMA:-aischema}
 
      - VACHAN_AI_XLSR_MAX_AUDIO_DURATION=${VACHAN_AI_XLSR_MAX_AUDIO_DURATION:-25}
@@ -377,7 +377,7 @@ services:
      
 
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
-     - VACHAN_AI_POSTGRES_PORT=5433
+     - VACHAN_AI_POSTGRES_PORT=5432
      - VACHAN_AI_LOGGING_LEVEL=INFO
      - VACHAN_LOGGING_LEVEL=INFO
      - VACHAN_AI_ENV=${VACHAN_AI_ENV:-Production}
@@ -409,7 +409,7 @@ services:
 
 
  worker:
-    image: jayasankarkk/vachan-ai:0.0.0-alpha.6
+    image: vachanengine/vachan-ai:0.0.0-alpha.7
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -417,12 +417,12 @@ services:
     environment:
      - REDIS_HOST=redis
      - REDIS_PORT=6379
-     - VACHAN_AI_POSTGRES_HOST=${VACHAN_AI_POSTGRES_HOST:-dov2prodconn.bridgeconn.com}
+     - VACHAN_AI_POSTGRES_HOST=${VACHAN_AI_POSTGRES_HOST:-vachan-db}
      - VACHAN_AI_POSTGRES_USER=${VACHAN_AI_POSTGRES_USER:-postgres}
-     - VACHAN_AI_POSTGRES_PASSWORD=${VACHAN_AI_POSTGRES_PASSWORD:-secret}
-     - VACHAN_AI_POSTGRES_DATABASE=${VACHAN_AI_POSTGRES_DATABASE:-vachan_ai_db}
+     - VACHAN_AI_POSTGRES_PASSWORD=${VACHAN_AI_POSTGRES_PASSWORD:-password}
+     - VACHAN_AI_POSTGRES_DATABASE=${VACHAN_AI_POSTGRES_DATABASE:-vachan_dev}
      - VACHAN_AI_POSTGRES_SCHEMA=${VACHAN_AI_POSTGRES_SCHEMA:-aischema}
-     - VACHAN_AI_POSTGRES_PORT=5433
+     - VACHAN_AI_POSTGRES_PORT=5432
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
      - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
      - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
