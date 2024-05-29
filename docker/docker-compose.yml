@@ -181,24 +181,24 @@ services:
   networks:
    - VE-network
 
-#  vachan-demos:
-#     image: kavitha3797/vachan-demos:v2-0-0-alpha-11
-#     expose:
-#       - 8002
-#     command: uvicorn main:app --host 0.0.0.0 --port 8002
-#     restart: always
-#     environment:
-#      - VACHAN_DOMAIN=${VACHAN_DOMAIN:-api.vachanengine.org}
-#      - VACHAN_LOGGING_LEVEL=INFO
-#     volumes:
-#      - logs-vol:/app/logs
-#     depends_on:
-#      - vachan-api
-#     profiles:
-#      - local-run
-#      - deployment
-#     networks:
-#      - VE-network
+ vachan-demos:
+    image: vachanengine/vachan-demos:v2.0.0-alpha.12
+    expose:
+      - 8002
+    command: uvicorn main:app --host 0.0.0.0 --port 8002
+    restart: always
+    environment:
+     - VACHAN_DOMAIN=${VACHAN_DOMAIN:-api.vachanengine.org}
+     - VACHAN_LOGGING_LEVEL=INFO
+    volumes:
+     - logs-vol:/app/logs
+    depends_on:
+     - vachan-api
+    profiles:
+     - local-run
+     - deployment
+    networks:
+     - VE-network
  
  vachan-cms-rest:
     image: vachanengine/vachan-cms-rest:v2.0.11
