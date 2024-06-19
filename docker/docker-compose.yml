@@ -182,7 +182,7 @@ services:
    - VE-network
 
  vachan-demos:
-    image: vachanengine/vachan-demos:v2.0.0-alpha.12
+    image: vachanengine/vachan-demos:v2.0.0-alpha.13
     expose:
       - 8002
     command: uvicorn main:app --host 0.0.0.0 --port 8002
@@ -201,7 +201,7 @@ services:
      - VE-network
  
  vachan-cms-rest:
-    image: vachanengine/vachan-cms-rest:v2.0.11
+    image: vachanengine/vachan-cms-rest:v2.0.12
     expose:
       - 8005
     command: uvicorn main:app --host 0.0.0.0 --port 8005
