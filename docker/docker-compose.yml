@@ -391,7 +391,7 @@ services:
      - VACHAN_AI_BASEPATH=/v2/ai
      - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://localhost}
      - VACHAN_AI_DOMAIN=http://vachan-api
-    command: uvicorn main:app --host 0.0.0.0 --port 8008
+    command: uvicorn main:app --host 0.0.0.0 --port 8009
     volumes:
      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/docker-volumes/ai-logs-vol:/app/logs
      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/cache:/root/.cache
@@ -405,9 +405,9 @@ services:
      - local-run
      - deployment
     expose:
-     - 8008
+     - 8009
     ports:
-     - "8008:8008"
+     - "8009:8009"
     networks:
      - VE-network
     container_name: vachan-ai
