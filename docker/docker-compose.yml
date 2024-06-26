@@ -345,109 +345,109 @@ services:
      - VE-network
 
 
- vachan-ai:
-    image: vachanengine/vachan-ai:0.0.0-alpha.8
-    healthcheck:
-     timeout: 45s
-     interval: 10s
-     retries: 10
-    environment:
-     - VACHAN_POSTGRES_HOST=${VACHAN_POSTGRES_HOST:-vachan-db}
-     - VACHAN_POSTGRES_USER=${VACHAN_POSTGRES_USER:-postgres}
-     - VACHAN_POSTGRES_PASSWORD=${VACHAN_POSTGRES_PASSWORD:-password}
-     - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
-     - VACHAN_POSTGRES_SCHEMA=${VACHAN_POSTGRES_SCHEMA:-aischema}
-     - VACHAN_POSTGRES_PORT=5432
+#  vachan-ai:
+#     image: vachanengine/vachan-ai:0.0.0-alpha.8
+#     healthcheck:
+#      timeout: 45s
+#      interval: 10s
+#      retries: 10
+#     environment:
+#      - VACHAN_POSTGRES_HOST=${VACHAN_POSTGRES_HOST:-vachan-db}
+#      - VACHAN_POSTGRES_USER=${VACHAN_POSTGRES_USER:-postgres}
+#      - VACHAN_POSTGRES_PASSWORD=${VACHAN_POSTGRES_PASSWORD:-password}
+#      - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
+#      - VACHAN_POSTGRES_SCHEMA=${VACHAN_POSTGRES_SCHEMA:-aischema}
+#      - VACHAN_POSTGRES_PORT=5432
 
-     - VACHAN_AI_XLSR_MAX_AUDIO_DURATION=${VACHAN_AI_XLSR_MAX_AUDIO_DURATION:-25}
-     - VACHAN_AI_XLSR_SAMPLING_RATE=${VACHAN_AI_XLSR_SAMPLING_RATE:-16000}
-     - VACHAN_AI_NLLB_MAX_SRC_CHARS=${VACHAN_AI_NLLB_MAX_SRC_CHARS:-512}
-     - VACHAN_AI_NLLB_BATCH_SIZE=${VACHAN_AI_NLLB_BATCH_SIZE:-10}
+#      - VACHAN_AI_XLSR_MAX_AUDIO_DURATION=${VACHAN_AI_XLSR_MAX_AUDIO_DURATION:-25}
+#      - VACHAN_AI_XLSR_SAMPLING_RATE=${VACHAN_AI_XLSR_SAMPLING_RATE:-16000}
+#      - VACHAN_AI_NLLB_MAX_SRC_CHARS=${VACHAN_AI_NLLB_MAX_SRC_CHARS:-512}
+#      - VACHAN_AI_NLLB_BATCH_SIZE=${VACHAN_AI_NLLB_BATCH_SIZE:-10}
       
     
-     - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI:-http://dov2prodconn.bridgeconn.com:8083}
-     - VACHAN_AI_ARTIFACT_PATH=${VACHAN_AI_ARTIFACT_PATH:-models}
-     - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
-     - VACHAN_AI_MODEL_SETTINGS_DIR=${VACHAN_AI_MODEL_SETTINGS_DIR:-serving_model}
-     - VACHAN_AI_REQUEST_TIMEOUT=${VACHAN_AI_REQUEST_TIMEOUT:-60}
+#      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI:-http://dov2prodconn.bridgeconn.com:8083}
+#      - VACHAN_AI_ARTIFACT_PATH=${VACHAN_AI_ARTIFACT_PATH:-models}
+#      - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
+#      - VACHAN_AI_MODEL_SETTINGS_DIR=${VACHAN_AI_MODEL_SETTINGS_DIR:-serving_model}
+#      - VACHAN_AI_REQUEST_TIMEOUT=${VACHAN_AI_REQUEST_TIMEOUT:-60}
 
-     - VACHAN_AI_AWS_ACCESS_KEY=${VACHAN_AI_AWS_ACCESS_KEY}
-     - VACHAN_AI_AWS_SECRET_ACCESS_KEY=${VACHAN_AI_AWS_SECRET_ACCESS_KEY}
-     - VACHAN_AI_S3_BUCKET=${VACHAN_AI_S3_BUCKET}
-     - VACHAN_AI_AWS_ACCOUNT_REGION=${VACHAN_AI_AWS_ACCOUNT_REGION}
+#      - VACHAN_AI_AWS_ACCESS_KEY=${VACHAN_AI_AWS_ACCESS_KEY}
+#      - VACHAN_AI_AWS_SECRET_ACCESS_KEY=${VACHAN_AI_AWS_SECRET_ACCESS_KEY}
+#      - VACHAN_AI_S3_BUCKET=${VACHAN_AI_S3_BUCKET}
+#      - VACHAN_AI_AWS_ACCOUNT_REGION=${VACHAN_AI_AWS_ACCOUNT_REGION}
      
 
-     - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
-     - VACHAN_AI_LOGGING_LEVEL=INFO
-     - VACHAN_LOGGING_LEVEL=INFO
-     - VACHAN_AI_ENV=${VACHAN_AI_ENV:-Production}
-     - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
-     - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
-     - VACHAN_REDIS_PASS=${VACHAN_REDIS_PASS:-vsfrgetd}
-     - VACHAN_AI_DELETION_PERIOD=${VACHAN_AI_DELETION_PERIOD:-14}
-     - VACHAN_AI_CRON_DAY=${VACHAN_AI_CRON_DAY:-MON}
-     - VACHAN_AI_CRON_HOUR=${VACHAN_AI_CRON_HOUR:-12}
-     - VACHAN_AI_CRON_MINUTE=${VACHAN_AI_CRON_MINUTE:-30}
-     - VACHAN_AI_BASEPATH=/v2/ai
-     - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://localhost}
-     - VACHAN_AI_DOMAIN=http://vachan-api
-    command: uvicorn main:app --host 0.0.0.0 --port 8009
-    volumes:
-     - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/docker-volumes/ai-logs-vol:/app/logs
-     - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/cache:/root/.cache
-     - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/Downloads:/tmp
-     - ${VACHAN_AI_DATA_PATH}/Downloads:${VACHAN_AI_DATA_PATH}/Downloads
-    restart: always
-    depends_on:
-     - vachan-api
-     - redis
-    profiles:
-     - local-run
-     - deployment
-    expose:
-     - 8009
-    ports:
-     - "8009:8009"
-    networks:
-     - VE-network
-    container_name: vachan-ai
+#      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
+#      - VACHAN_AI_LOGGING_LEVEL=INFO
+#      - VACHAN_LOGGING_LEVEL=INFO
+#      - VACHAN_AI_ENV=${VACHAN_AI_ENV:-Production}
+#      - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
+#      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
+#      - VACHAN_REDIS_PASS=${VACHAN_REDIS_PASS:-vsfrgetd}
+#      - VACHAN_AI_DELETION_PERIOD=${VACHAN_AI_DELETION_PERIOD:-14}
+#      - VACHAN_AI_CRON_DAY=${VACHAN_AI_CRON_DAY:-MON}
+#      - VACHAN_AI_CRON_HOUR=${VACHAN_AI_CRON_HOUR:-12}
+#      - VACHAN_AI_CRON_MINUTE=${VACHAN_AI_CRON_MINUTE:-30}
+#      - VACHAN_AI_BASEPATH=/v2/ai
+#      - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://localhost}
+#      - VACHAN_AI_DOMAIN=http://vachan-api
+#     command: uvicorn main:app --host 0.0.0.0 --port 8009
+#     volumes:
+#      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/docker-volumes/ai-logs-vol:/app/logs
+#      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/cache:/root/.cache
+#      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/Downloads:/tmp
+#      - ${VACHAN_AI_DATA_PATH}/Downloads:${VACHAN_AI_DATA_PATH}/Downloads
+#     restart: always
+#     depends_on:
+#      - vachan-api
+#      - redis
+#     profiles:
+#      - local-run
+#      - deployment
+#     expose:
+#      - 8009
+#     ports:
+#      - "8009:8009"
+#     networks:
+#      - VE-network
+#     container_name: vachan-ai
 
 
- worker:
-    image: vachanengine/vachan-ai:0.0.0-alpha.8
-    healthcheck:
-     timeout: 45s
-     interval: 10s
-     retries: 10 
-    environment:
-     - REDIS_HOST=redis
-     - REDIS_PORT=6379
-     - VACHAN_POSTGRES_HOST=${VACHAN_POSTGRES_HOST:-vachan-db}
-     - VACHAN_POSTGRES_USER=${VACHAN_POSTGRES_USER:-postgres}
-     - VACHAN_POSTGRES_PASSWORD=${VACHAN_POSTGRES_PASSWORD:-password}
-     - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
-     - VACHAN_POSTGRES_SCHEMA=${VACHAN_POSTGRES_SCHEMA:-aischema}
-     - VACHAN_POSTGRES_PORT=5432
-     - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
-     - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
-     - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
-     - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
-    command: rq worker --url redis://:${VACHAN_REDIS_PASS}@redis:6379
-    links:
-      - redis
-    depends_on:
-      - redis
-      - vachan-api
-    volumes:
-     - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/docker-volumes/redis_worker-logs-vol:/app/rqlogs
-     - ../data/csvs:/csvs
-     - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/Downloads:/tmp
-    profiles:
-     - local-run
-     - deployment
-    networks:
-     - VE-network 
-    container_name: redis-worker
+#  worker:
+#     image: vachanengine/vachan-ai:0.0.0-alpha.8
+#     healthcheck:
+#      timeout: 45s
+#      interval: 10s
+#      retries: 10 
+#     environment:
+#      - REDIS_HOST=redis
+#      - REDIS_PORT=6379
+#      - VACHAN_POSTGRES_HOST=${VACHAN_POSTGRES_HOST:-vachan-db}
+#      - VACHAN_POSTGRES_USER=${VACHAN_POSTGRES_USER:-postgres}
+#      - VACHAN_POSTGRES_PASSWORD=${VACHAN_POSTGRES_PASSWORD:-password}
+#      - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
+#      - VACHAN_POSTGRES_SCHEMA=${VACHAN_POSTGRES_SCHEMA:-aischema}
+#      - VACHAN_POSTGRES_PORT=5432
+#      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
+#      - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
+#      - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
+#      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
+#     command: rq worker --url redis://:${VACHAN_REDIS_PASS}@redis:6379
+#     links:
+#       - redis
+#     depends_on:
+#       - redis
+#       - vachan-api
+#     volumes:
+#      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/docker-volumes/redis_worker-logs-vol:/app/rqlogs
+#      - ../data/csvs:/csvs
+#      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/Downloads:/tmp
+#     profiles:
+#      - local-run
+#      - deployment
+#     networks:
+#      - VE-network 
+#     container_name: redis-worker
 
 
  # Web Server
