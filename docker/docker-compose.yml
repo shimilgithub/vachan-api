@@ -346,7 +346,7 @@ services:
 
 
  vachan-ai:
-    image: vachanengine/vachan-ai:0.0.0-alpha.8
+    image: vachanengine/vachan-ai:0.0.0-alpha.11
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -389,7 +389,7 @@ services:
      - VACHAN_AI_CRON_HOUR=${VACHAN_AI_CRON_HOUR:-12}
      - VACHAN_AI_CRON_MINUTE=${VACHAN_AI_CRON_MINUTE:-30}
      - VACHAN_AI_BASEPATH=/v2/ai
-     - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://localhost}
+     - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://vachan-access:8007}
      - VACHAN_AI_DOMAIN=http://vachan-api
     command: uvicorn main:app --host 0.0.0.0 --port 8009
     volumes:
@@ -398,7 +398,11 @@ services:
      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/Downloads:/tmp
      - ${VACHAN_AI_DATA_PATH}/Downloads:${VACHAN_AI_DATA_PATH}/Downloads
     restart: always
+    links:
+      - redis
+      - vachan-db
     depends_on:
+     - vachan-db
      - vachan-api
      - redis
     profiles:
@@ -414,7 +418,7 @@ services:
 
 
  worker:
-    image: vachanengine/vachan-ai:0.0.0-alpha.8
+    image: vachanengine/vachan-ai:0.0.0-alpha.11
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -435,7 +439,9 @@ services:
     command: rq worker --url redis://:${VACHAN_REDIS_PASS}@redis:6379
     links:
       - redis
+      - vachan-db
     depends_on:
+      - vachan-db
       - redis
       - vachan-api
     volumes:
