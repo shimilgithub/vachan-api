@@ -54,4 +54,4 @@ jobs:
           cd /home/vachanstaging/vachan-api
           git pull origin version-2
           cd docker
-          docker compose --profile deployment --env-file prod.env up --force-recreate --build -d
+          docker compose -f docker-compose-production.yml --profile deployment --env-file prod.env up --force-recreate --build -d
